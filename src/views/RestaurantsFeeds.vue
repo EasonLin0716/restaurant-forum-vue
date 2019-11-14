@@ -6,7 +6,7 @@
     <div class="row">
       <div class="col-md-6">
         <h3>最新餐廳</h3>
-        <NewestRestaurants />
+        <NewestRestaurants :restaurants="restaurants" />
       </div>
       <div class="col-md-6">
         <!-- 最新評論 NewestComments-->
