@@ -303,7 +303,7 @@ const dummyData = {
   page: 1,
   totalPage: [1, 2, 3, 4, 5],
   prev: 1,
-  next: 2
+  next: 2,
 };
 
 export default {
