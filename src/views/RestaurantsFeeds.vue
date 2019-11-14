@@ -9,8 +9,8 @@
         <NewestRestaurants :restaurants="restaurants" />
       </div>
       <div class="col-md-6">
-        <!-- 最新評論 NewestComments-->
         <h3>最新評論</h3>
+        <NewestComments :comments="comments" />
       </div>
     </div>
   </div>
@@ -19,6 +19,7 @@
 <script>
 import NavTabs from "./../components/NavTabs";
 import NewestRestaurants from "./../components/NewestRestaurants";
+import NewestComments from "./../components/NewestComments";
 const dummyData = {
   restaurants: [
     {
@@ -244,7 +245,21 @@ const dummyData = {
         createdAt: "2019-07-30T16:24:54.983Z",
         updatedAt: "2019-09-15T07:49:43.737Z"
       },
-      Restaurant: null
+      Restaurant: {
+        id: 25,
+        name: "Austen Runte Jr.",
+        tel: "(111) 281-9830 x0839",
+        address: "76697 Greenfelder Isle",
+        opening_hours: "08:00",
+        description:
+          "Incidunt voluptas quo. Et tempora facere totam odio. Dolor aliquam vitae ipsum minus velit aut animi.\n \rQuam enim deserunt ratione. Qui cupiditate qui eos dolores repellat velit. Et ea explicabo sed dolores dolorum magni voluptatem. Omnis exercitationem omnis. Dolores praesentium itaque eos. Omnis dignissimos dolorum quia.\n \rVel enim maiores quidem ut quia. Ipsum voluptatem dolorem a sit eum. Libero soluta reprehenderit impedit. Non quae tenetur eum sapiente ab ipsum sequi.",
+        image:
+          "https://loremflickr.com/320/240/restaurant,food/?random=47.68607895620682",
+        viewCounts: 3,
+        createdAt: "2019-07-30T16:24:55.438Z",
+        updatedAt: "2019-08-27T10:12:55.028Z",
+        CategoryId: 3
+      }
     },
     {
       id: 170,
@@ -264,7 +279,21 @@ const dummyData = {
         createdAt: "2019-07-30T16:24:54.983Z",
         updatedAt: "2019-09-15T07:49:43.737Z"
       },
-      Restaurant: null
+      Restaurant: {
+        id: 25,
+        name: "Austen Runte Jr.",
+        tel: "(111) 281-9830 x0839",
+        address: "76697 Greenfelder Isle",
+        opening_hours: "08:00",
+        description:
+          "Incidunt voluptas quo. Et tempora facere totam odio. Dolor aliquam vitae ipsum minus velit aut animi.\n \rQuam enim deserunt ratione. Qui cupiditate qui eos dolores repellat velit. Et ea explicabo sed dolores dolorum magni voluptatem. Omnis exercitationem omnis. Dolores praesentium itaque eos. Omnis dignissimos dolorum quia.\n \rVel enim maiores quidem ut quia. Ipsum voluptatem dolorem a sit eum. Libero soluta reprehenderit impedit. Non quae tenetur eum sapiente ab ipsum sequi.",
+        image:
+          "https://loremflickr.com/320/240/restaurant,food/?random=47.68607895620682",
+        viewCounts: 3,
+        createdAt: "2019-07-30T16:24:55.438Z",
+        updatedAt: "2019-08-27T10:12:55.028Z",
+        CategoryId: 3
+      }
     },
     {
       id: 169,
@@ -284,7 +313,21 @@ const dummyData = {
         createdAt: "2019-07-30T16:24:54.983Z",
         updatedAt: "2019-09-15T07:49:43.737Z"
       },
-      Restaurant: null
+      Restaurant: {
+        id: 25,
+        name: "Austen Runte Jr.",
+        tel: "(111) 281-9830 x0839",
+        address: "76697 Greenfelder Isle",
+        opening_hours: "08:00",
+        description:
+          "Incidunt voluptas quo. Et tempora facere totam odio. Dolor aliquam vitae ipsum minus velit aut animi.\n \rQuam enim deserunt ratione. Qui cupiditate qui eos dolores repellat velit. Et ea explicabo sed dolores dolorum magni voluptatem. Omnis exercitationem omnis. Dolores praesentium itaque eos. Omnis dignissimos dolorum quia.\n \rVel enim maiores quidem ut quia. Ipsum voluptatem dolorem a sit eum. Libero soluta reprehenderit impedit. Non quae tenetur eum sapiente ab ipsum sequi.",
+        image:
+          "https://loremflickr.com/320/240/restaurant,food/?random=47.68607895620682",
+        viewCounts: 3,
+        createdAt: "2019-07-30T16:24:55.438Z",
+        updatedAt: "2019-08-27T10:12:55.028Z",
+        CategoryId: 3
+      }
     },
     {
       id: 168,
@@ -304,7 +347,21 @@ const dummyData = {
         createdAt: "2019-07-30T16:24:54.983Z",
         updatedAt: "2019-09-15T07:49:43.737Z"
       },
-      Restaurant: null
+      Restaurant: {
+        id: 25,
+        name: "Austen Runte Jr.",
+        tel: "(111) 281-9830 x0839",
+        address: "76697 Greenfelder Isle",
+        opening_hours: "08:00",
+        description:
+          "Incidunt voluptas quo. Et tempora facere totam odio. Dolor aliquam vitae ipsum minus velit aut animi.\n \rQuam enim deserunt ratione. Qui cupiditate qui eos dolores repellat velit. Et ea explicabo sed dolores dolorum magni voluptatem. Omnis exercitationem omnis. Dolores praesentium itaque eos. Omnis dignissimos dolorum quia.\n \rVel enim maiores quidem ut quia. Ipsum voluptatem dolorem a sit eum. Libero soluta reprehenderit impedit. Non quae tenetur eum sapiente ab ipsum sequi.",
+        image:
+          "https://loremflickr.com/320/240/restaurant,food/?random=47.68607895620682",
+        viewCounts: 3,
+        createdAt: "2019-07-30T16:24:55.438Z",
+        updatedAt: "2019-08-27T10:12:55.028Z",
+        CategoryId: 3
+      }
     },
     {
       id: 166,
@@ -324,7 +381,21 @@ const dummyData = {
         createdAt: "2019-07-30T16:24:54.983Z",
         updatedAt: "2019-09-15T07:49:43.737Z"
       },
-      Restaurant: null
+      Restaurant: {
+        id: 25,
+        name: "Austen Runte Jr.",
+        tel: "(111) 281-9830 x0839",
+        address: "76697 Greenfelder Isle",
+        opening_hours: "08:00",
+        description:
+          "Incidunt voluptas quo. Et tempora facere totam odio. Dolor aliquam vitae ipsum minus velit aut animi.\n \rQuam enim deserunt ratione. Qui cupiditate qui eos dolores repellat velit. Et ea explicabo sed dolores dolorum magni voluptatem. Omnis exercitationem omnis. Dolores praesentium itaque eos. Omnis dignissimos dolorum quia.\n \rVel enim maiores quidem ut quia. Ipsum voluptatem dolorem a sit eum. Libero soluta reprehenderit impedit. Non quae tenetur eum sapiente ab ipsum sequi.",
+        image:
+          "https://loremflickr.com/320/240/restaurant,food/?random=47.68607895620682",
+        viewCounts: 3,
+        createdAt: "2019-07-30T16:24:55.438Z",
+        updatedAt: "2019-08-27T10:12:55.028Z",
+        CategoryId: 3
+      }
     },
     {
       id: 165,
@@ -344,7 +415,21 @@ const dummyData = {
         createdAt: "2019-07-30T16:24:54.983Z",
         updatedAt: "2019-09-15T07:49:43.737Z"
       },
-      Restaurant: null
+      Restaurant: {
+        id: 25,
+        name: "Austen Runte Jr.",
+        tel: "(111) 281-9830 x0839",
+        address: "76697 Greenfelder Isle",
+        opening_hours: "08:00",
+        description:
+          "Incidunt voluptas quo. Et tempora facere totam odio. Dolor aliquam vitae ipsum minus velit aut animi.\n \rQuam enim deserunt ratione. Qui cupiditate qui eos dolores repellat velit. Et ea explicabo sed dolores dolorum magni voluptatem. Omnis exercitationem omnis. Dolores praesentium itaque eos. Omnis dignissimos dolorum quia.\n \rVel enim maiores quidem ut quia. Ipsum voluptatem dolorem a sit eum. Libero soluta reprehenderit impedit. Non quae tenetur eum sapiente ab ipsum sequi.",
+        image:
+          "https://loremflickr.com/320/240/restaurant,food/?random=47.68607895620682",
+        viewCounts: 3,
+        createdAt: "2019-07-30T16:24:55.438Z",
+        updatedAt: "2019-08-27T10:12:55.028Z",
+        CategoryId: 3
+      }
     },
     {
       id: 162,
@@ -364,7 +449,21 @@ const dummyData = {
         createdAt: "2019-07-30T16:24:54.983Z",
         updatedAt: "2019-09-15T07:49:43.737Z"
       },
-      Restaurant: null
+      Restaurant: {
+        id: 25,
+        name: "Austen Runte Jr.",
+        tel: "(111) 281-9830 x0839",
+        address: "76697 Greenfelder Isle",
+        opening_hours: "08:00",
+        description:
+          "Incidunt voluptas quo. Et tempora facere totam odio. Dolor aliquam vitae ipsum minus velit aut animi.\n \rQuam enim deserunt ratione. Qui cupiditate qui eos dolores repellat velit. Et ea explicabo sed dolores dolorum magni voluptatem. Omnis exercitationem omnis. Dolores praesentium itaque eos. Omnis dignissimos dolorum quia.\n \rVel enim maiores quidem ut quia. Ipsum voluptatem dolorem a sit eum. Libero soluta reprehenderit impedit. Non quae tenetur eum sapiente ab ipsum sequi.",
+        image:
+          "https://loremflickr.com/320/240/restaurant,food/?random=47.68607895620682",
+        viewCounts: 3,
+        createdAt: "2019-07-30T16:24:55.438Z",
+        updatedAt: "2019-08-27T10:12:55.028Z",
+        CategoryId: 3
+      }
     },
     {
       id: 161,
@@ -384,7 +483,21 @@ const dummyData = {
         createdAt: "2019-07-30T16:24:54.983Z",
         updatedAt: "2019-09-15T07:49:43.737Z"
       },
-      Restaurant: null
+      Restaurant: {
+        id: 25,
+        name: "Austen Runte Jr.",
+        tel: "(111) 281-9830 x0839",
+        address: "76697 Greenfelder Isle",
+        opening_hours: "08:00",
+        description:
+          "Incidunt voluptas quo. Et tempora facere totam odio. Dolor aliquam vitae ipsum minus velit aut animi.\n \rQuam enim deserunt ratione. Qui cupiditate qui eos dolores repellat velit. Et ea explicabo sed dolores dolorum magni voluptatem. Omnis exercitationem omnis. Dolores praesentium itaque eos. Omnis dignissimos dolorum quia.\n \rVel enim maiores quidem ut quia. Ipsum voluptatem dolorem a sit eum. Libero soluta reprehenderit impedit. Non quae tenetur eum sapiente ab ipsum sequi.",
+        image:
+          "https://loremflickr.com/320/240/restaurant,food/?random=47.68607895620682",
+        viewCounts: 3,
+        createdAt: "2019-07-30T16:24:55.438Z",
+        updatedAt: "2019-08-27T10:12:55.028Z",
+        CategoryId: 3
+      }
     },
     {
       id: 160,
@@ -404,7 +517,21 @@ const dummyData = {
         createdAt: "2019-07-30T16:24:54.983Z",
         updatedAt: "2019-09-15T07:49:43.737Z"
       },
-      Restaurant: null
+      Restaurant: {
+        id: 25,
+        name: "Austen Runte Jr.",
+        tel: "(111) 281-9830 x0839",
+        address: "76697 Greenfelder Isle",
+        opening_hours: "08:00",
+        description:
+          "Incidunt voluptas quo. Et tempora facere totam odio. Dolor aliquam vitae ipsum minus velit aut animi.\n \rQuam enim deserunt ratione. Qui cupiditate qui eos dolores repellat velit. Et ea explicabo sed dolores dolorum magni voluptatem. Omnis exercitationem omnis. Dolores praesentium itaque eos. Omnis dignissimos dolorum quia.\n \rVel enim maiores quidem ut quia. Ipsum voluptatem dolorem a sit eum. Libero soluta reprehenderit impedit. Non quae tenetur eum sapiente ab ipsum sequi.",
+        image:
+          "https://loremflickr.com/320/240/restaurant,food/?random=47.68607895620682",
+        viewCounts: 3,
+        createdAt: "2019-07-30T16:24:55.438Z",
+        updatedAt: "2019-08-27T10:12:55.028Z",
+        CategoryId: 3
+      }
     },
     {
       id: 125,
@@ -445,7 +572,8 @@ const dummyData = {
 export default {
   components: {
     NavTabs,
-    NewestRestaurants
+    NewestRestaurants,
+    NewestComments
   },
   data() {
     return {
