@@ -3,7 +3,10 @@
     <h1>餐廳描述頁</h1>
     <RestaurantDetail :initial-restaurant="restaurant" />
     <hr />
-    <RestaurantComments :restaurant-comments="restaurantComments" />
+    <RestaurantComments
+      :restaurant-comments="restaurantComments"
+      @after-delete-comment="afterDeleteComment"
+    />
     <!-- 新增評論 CreateComment -->
   </div>
 </template>
@@ -161,6 +164,12 @@ export default {
       };
 
       this.restaurantComments = dummyData.restaurant.Comments;
+    },
+    afterDeleteComment(commentId) {
+      // 以 filter 保留未被選擇的 comment.id
+      this.restaurantComments = this.restaurantComments.filter(
+        comment => comment.id !== commentId
+      );
     }
   }
 };
