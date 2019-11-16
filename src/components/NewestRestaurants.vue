@@ -4,8 +4,9 @@
     <div class="card-body">
       <div v-for="restaurant in restaurants" :key="restaurant.id">
         <h4>
-          <a href="#">{{ restaurant.name }}</a>
-          &nbsp;
+          <router-link
+            :to="{ name: 'restaurant', params: {id: restaurant.id}}"
+          >{{ restaurant.name }}</router-link>&nbsp;
           <small>{{ restaurant.Category.name }}</small>
         </h4>
         <p>{{ restaurant.description }}</p>
