@@ -11,8 +11,7 @@
     <div class="row">
       <div class="col-md-4">
         <UserFollowingsCard :user="user" />
-
-        <!-- UserFollowersCard -->
+        <UserFollowersCard :user="user" />
       </div>
       <div class="col-md-8">
         <!-- UserCommentsCard -->
@@ -25,6 +24,7 @@
 /* eslint-disable */
 import UserProfileCard from "./../components/UserProfileCard";
 import UserFollowingsCard from "./../components/UserFollowingsCard";
+import UserFollowersCard from "./../components/UserFollowersCard";
 
 const dummyData = {
   profile: {
@@ -1307,7 +1307,8 @@ export default {
   name: "User",
   components: {
     UserProfileCard,
-    UserFollowingsCard
+    UserFollowingsCard,
+    UserFollowersCard
   },
   data() {
     return {
