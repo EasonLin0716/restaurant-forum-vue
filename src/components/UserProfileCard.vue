@@ -22,13 +22,23 @@
           </li>
         </ul>
         <p></p>
-        <button
-          v-if="isFollowed"
-          type="button"
-          class="btn btn-danger"
-          @click.stop.prevent="removeFollowing"
-        >取消追蹤</button>
-        <button v-else type="button" class="btn btn-primary" @click.stop.prevent="addFollowing">追蹤</button>
+        <template v-if="isCurrentUser">
+          <a href="#" class="btn btn-primary">Edit</a>
+        </template>
+        <template v-else>
+          <button
+            v-if="isFollowed"
+            type="button"
+            class="btn btn-danger"
+            @click.stop.prevent="removeFollowing()"
+          >取消追蹤</button>
+          <button
+            v-else
+            type="button"
+            class="btn btn-primary"
+            @click.stop.prevent="addFollowing()"
+          >追蹤</button>
+        </template>
         <p></p>
       </div>
     </div>
@@ -52,6 +62,10 @@ export default {
       required: true
     },
     initialIsFollowed: {
+      type: Boolean,
+      required: true
+    },
+    isCurrentUser: {
       type: Boolean,
       required: true
     }

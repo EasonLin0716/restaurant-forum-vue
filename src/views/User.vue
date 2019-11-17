@@ -1,7 +1,11 @@
 <template>
   <div class="container">
     <div class="card mb-3">
-      <UserProfileCard :user="user" :initialIsFollowed="isFollowed" />
+      <UserProfileCard
+        :user="user"
+        :initial-is-followed="isFollowed"
+        :is-current-user="currentUser.id === user.id"
+      />
     </div>
 
     <div class="row">
@@ -1287,6 +1291,17 @@ const dummyData = {
   isFollowed: false
 };
 
+const dummyUser = {
+  currentUser: {
+    id: 1,
+    name: "管理者",
+    email: "root@example.com",
+    image: "https://i.pravatar.cc/300",
+    isAdmin: true
+  },
+  isAuthenticated: true
+};
+
 export default {
   name: "User",
   components: {
@@ -1308,7 +1323,8 @@ export default {
         Followers: [],
         Followings: []
       },
-      isFollowed: false
+      isFollowed: false,
+      currentUser: dummyUser.currentUser
     };
   },
   methods: {
