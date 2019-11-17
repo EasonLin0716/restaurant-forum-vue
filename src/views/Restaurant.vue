@@ -1,6 +1,5 @@
 <template>
   <div class="container py-5">
-    <h1>餐廳描述頁</h1>
     <RestaurantDetail :initial-restaurant="restaurant" />
     <hr />
     <RestaurantComments
