@@ -1,8 +1,7 @@
 <template>
   <div class="container">
-    <h1>display user.vue here</h1>
     <div class="card mb-3">
-      <!-- UserProfileCard.vue -->
+      <UserProfileCard :user="user" :initialIsFollowed="isFollowed" />
     </div>
 
     <div class="row">
@@ -20,6 +19,8 @@
 
 <script>
 /* eslint-disable */
+import UserProfileCard from "./../components/UserProfileCard";
+
 const dummyData = {
   profile: {
     id: 1,
@@ -1288,6 +1289,9 @@ const dummyData = {
 
 export default {
   name: "User",
+  components: {
+    UserProfileCard
+  },
   data() {
     return {
       user: {
@@ -1303,7 +1307,8 @@ export default {
         FavoritedRestaurants: [],
         Followers: [],
         Followings: []
-      }
+      },
+      isFollowed: false
     };
   },
   methods: {
@@ -1324,6 +1329,7 @@ export default {
         Followers: profile.Followers,
         Followings: profile.Followings
       };
+      this.isFollowed = dummyData.isFollowed;
     }
   },
   created() {
