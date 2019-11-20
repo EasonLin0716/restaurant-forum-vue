@@ -1,5 +1,5 @@
 <template>
-  <form>
+  <form @submit.stop.prevent="handleSubmit">
     <div class="form-group">
       <label for="name">Name</label>
       <input
@@ -68,18 +68,33 @@
 
     <div class="form-group">
       <label for="description">Description</label>
-      <textarea 
-      id="description" 
-      v-model="restaurant.description"
-      class="form-control" 
-      rows="3" 
-      name="description" 
+      <textarea
+        id="description"
+        v-model="restaurant.description"
+        class="form-control"
+        rows="3"
+        name="description"
       />
     </div>
 
     <div class="form-group">
       <label for="image">Image</label>
-      <input id="image" type="file" name="image" accept="image/*" class="form-control-file" />
+      <img
+        v-if="restaurant.image"
+        :src="restaurant.image"
+        class="d-block img-thumbnail mb-3"
+        width="200"
+        height="200"
+      />
+
+      <input
+        id="image"
+        type="file"
+        name="image"
+        accept="image/*"
+        class="form-control-file"
+        @change="handleFileChange"
+      />
     </div>
 
     <button type="submit" class="btn btn-primary">送出</button>
@@ -87,6 +102,7 @@
 </template>
 
 <script>
+/* eslint-disable */
 const dummyData = {
   categories: [
     {
@@ -137,6 +153,11 @@ export default {
   methods: {
     fetchCategories() {
       this.categories = dummyData.categories;
+    },
+    handleSubmit(e) {
+      const form = e.target;
+      const formData = new FormData(form);
+      this.$emit("after-submit", formData);
     }
   }
 };
