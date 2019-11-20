@@ -147,8 +147,26 @@ export default {
       categories: []
     };
   },
+  props: {
+    initialRestaurant: {
+      type: Object,
+      default: () => ({
+        name: "",
+        categoryId: "",
+        tel: "",
+        address: "",
+        description: "",
+        image: "",
+        openingHours: ""
+      })
+    }
+  },
   created() {
     this.fetchCategories();
+    this.restaurant = {
+      ...this.restaurant,
+      ...this.initialRestaurant
+    };
   },
   methods: {
     fetchCategories() {
@@ -159,12 +177,12 @@ export default {
       const formData = new FormData(form);
       this.$emit("after-submit", formData);
     },
-    handleFileChange (e) {
-      const files = e.target.files
-      if (!files.length) return // 如果沒有檔案則離開此函式
+    handleFileChange(e) {
+      const files = e.target.files;
+      if (!files.length) return; // 如果沒有檔案則離開此函式
       // 否則產生預覽圖...
-      const imageURL = window.URL.createObjectURL(files[0])
-      this.restaurant.image = imageURL
+      const imageURL = window.URL.createObjectURL(files[0]);
+      this.restaurant.image = imageURL;
     }
   }
 };
