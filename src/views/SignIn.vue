@@ -32,7 +32,9 @@
         />
       </div>
 
-      <button class="btn btn-lg btn-primary btn-block mb-3" type="submit">Submit</button>
+      <button class="btn btn-lg btn-primary btn-block mb-3" type="submit">
+        Submit
+      </button>
 
       <div class="text-center mb-3">
         <p>
@@ -45,28 +47,33 @@
   </div>
 </template>
 
-
-
 <script>
 /* eslint-disable */
+import authorizationAPI from './../apis/authorization'
 export default {
-  name: "SignIn",
+  name: 'SignIn',
   data() {
     return {
-      email: "",
-      password: ""
-    };
+      email: '',
+      password: ''
+    }
   },
   methods: {
     handleSubmit(e) {
-      const data = JSON.stringify({
-        email: this.email,
-        password: this.password
-      });
-
-      // TODO: 向後端驗證使用者登入資訊是否合法
-      console.log("data", data);
+      authorizationAPI
+        .signIn({
+          email: this.email,
+          password: this.password
+        })
+        .then(response => {
+          // 取得 API 請求後的資料
+          const { data } = response
+          // 將 token 存放在 localStorage 內
+          localStorage.setItem('token', data.token)
+          // 成功登入後轉址到餐聽首頁
+          this.$router.push('/restaurants')
+        })
     }
   }
-};
+}
 </script>
