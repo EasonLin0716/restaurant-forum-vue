@@ -50,6 +50,7 @@
 <script>
 /* eslint-disable */
 import authorizationAPI from './../apis/authorization'
+import { Toast } from './../utils/helpers'
 export default {
   name: 'SignIn',
   data() {
@@ -60,6 +61,15 @@ export default {
   },
   methods: {
     handleSubmit(e) {
+      // 如果 email 或 password 為空，則使用 Toast 提示
+      // 然後 return 不繼續往後執行
+      if (!this.email || !this.password) {
+        Toast.fire({
+          type: 'warning',
+          title: '請填入 email 和 password'
+        })
+        return
+      }
       authorizationAPI
         .signIn({
           email: this.email,
@@ -72,6 +82,17 @@ export default {
           localStorage.setItem('token', data.token)
           // 成功登入後轉址到餐聽首頁
           this.$router.push('/restaurants')
+        })
+        .catch(error => {
+          // 將密碼欄位清空
+          this.password = ''
+
+          // 顯示錯誤提示
+          Toast.fire({
+            type: 'warning',
+            title: '請確認您輸入的帳號密碼'
+          })
+          console.log('error', error)
         })
     }
   }
