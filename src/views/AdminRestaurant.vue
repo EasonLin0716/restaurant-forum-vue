@@ -84,6 +84,12 @@ export default {
     const { id: restaurantId } = this.$route.params;
     this.fetchRestaurant(restaurantId);
   },
+  beforeRouteUpdate(to, from, next) {
+    // 路由改變時重新抓取資料
+    const { id } = to.params;
+    this.fetchRestaurant(id);
+    next();
+  },
   methods: {
     async fetchRestaurant(restaurantId) {
       try {
