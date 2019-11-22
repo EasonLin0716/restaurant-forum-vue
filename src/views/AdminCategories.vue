@@ -113,9 +113,6 @@ export default {
   created() {
     this.fetchCategories();
   },
-  updated() {
-    this.fetchCategories();
-  },
   methods: {
     async fetchCategories() {
       try {
@@ -154,16 +151,13 @@ export default {
         if (statusText !== "OK") {
           throw new Error(statusText);
         }
-        this.categories.push({
-          ...data.category,
-          isEditing: false
-        });
         Toast.fire({
           type: "SweetAlert",
           title: "建立成功！"
         });
         this.isProcessing = false;
         this.newCategoryName = "";
+        this.fetchCategories();
       } catch (error) {
         this.isProcessing = false;
         Toast.fire({
@@ -190,9 +184,23 @@ export default {
         };
       });
     },
-    updateCategory({ categoryId, name }) {
+    async updateCategory({ categoryId, name }) {
       // TODO: 透過 API 去向伺服器更新餐廳類別名稱
-      this.toggleIsEditing(categoryId);
+      try {
+        const { data, statusText } = await adminApi.categories.update({
+          categoryId,
+          name
+        });
+        this.toggleIsEditing(categoryId);
+        if (statusText !== "OK" || data.status !== "success") {
+          throw new Error(statusText);
+        }
+      } catch (error) {
+        Toast.fire({
+          type: "error",
+          title: "無法更新餐廳類別，請稍後再試"
+        });
+      }
     },
     handleCancel(categoryId) {
       this.categories = this.categories.map(category => {
