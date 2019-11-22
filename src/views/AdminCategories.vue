@@ -113,6 +113,9 @@ export default {
   created() {
     this.fetchCategories();
   },
+  updated() {
+    this.fetchCategories();
+  },
   methods: {
     async fetchCategories() {
       try {
@@ -123,7 +126,10 @@ export default {
         if (statusText !== "OK") {
           throw new Error(statusText);
         }
-        this.categories = categories;
+        this.categories = categories.map(category => ({
+          ...category,
+          isEditing: false
+        }));
       } catch (error) {
         Toast.fire({
           type: "warning",
@@ -144,9 +150,14 @@ export default {
         const { data, statusText } = await adminApi.categories.create({
           name: this.newCategoryName
         });
+        console.log(data);
         if (statusText !== "OK") {
           throw new Error(statusText);
         }
+        this.categories.push({
+          ...data.category,
+          isEditing: false
+        });
         Toast.fire({
           type: "SweetAlert",
           title: "建立成功！"
