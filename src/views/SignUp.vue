@@ -58,7 +58,11 @@
         />
       </div>
 
-      <button class="btn btn-lg btn-primary btn-block mb-3" type="submit">Submit</button>
+      <button
+        class="btn btn-lg btn-primary btn-block mb-3"
+        type="submit"
+        :disabled="isProcessing"
+      >{{isProcessing ? 'Processing' : 'Submit'}}</button>
 
       <div class="text-center mb-3">
         <p>
@@ -72,6 +76,9 @@
 </template>
 
 <script>
+/* eslint-disable */
+import authorizationAPI from "./../apis/authorization";
+import { Toast } from "./../utils/helpers";
 export default {
   name: "SignUp",
   data() {
@@ -79,20 +86,54 @@ export default {
       name: "",
       email: "",
       password: "",
-      passwordCheck: ""
+      passwordCheck: "",
+      isProcessing: false
     };
   },
   methods: {
     /* eslint-disable */
-    handleSubmit(e) {
-      const data = JSON.stringify({
-        name: this.name,
-        email: this.email,
-        password: this.password,
-        passwordCheck: this.passwordCheck
-      });
-
-      console.log("data", data);
+    async handleSubmit(e) {
+      try {
+        // 防止欄位漏填
+        if (
+          !this.name ||
+          !this.email ||
+          !this.password ||
+          !this.passwordCheck
+        ) {
+          Toast.fire({
+            type: "warning",
+            title: "請確認已填寫所有欄位"
+          });
+          return;
+        }
+        // 防止密碼錯誤
+        if (this.password !== this.passwordCheck) {
+          Toast.fire({
+            type: "warning",
+            title: "兩次輸入的密碼不同"
+          });
+          this.passwordCheck = "";
+          return;
+        }
+        this.isProcessing = true;
+        const { data, statusText } = await authorizationAPI.signUp({
+          name: this.name,
+          email: this.email,
+          password: this.password,
+          passwordCheck: this.passwordCheck
+        });
+        if (statusText !== "OK" || data.status !== "success") {
+          throw new Error(statusText);
+        }
+        Toast.fire({
+          type: "success",
+          title: data.message
+        });
+        this.$router.push("/signin");
+      } catch (error) {
+        console.warn(error);
+      }
     }
   }
 };
