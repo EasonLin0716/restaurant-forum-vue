@@ -21,10 +21,13 @@
 </template>
 
 <script>
+/* eslint-disable */
 import NavTabs from "./../components/NavTabs";
 import RestaurantCard from "./../components/RestaurantCard";
 import RestaurantNavPills from "./../components/RestaurantsNavPills";
 import RestaurantsPagination from "./../components/RestaurantsPagination";
+import restaurantsAPI from "./../apis/restaurants";
+import { Toast } from "./../utils/helpers";
 
 const dummyData = {
   restaurants: [
@@ -303,7 +306,7 @@ const dummyData = {
   page: 1,
   totalPage: [1, 2, 3, 4, 5],
   prev: 1,
-  next: 2,
+  next: 2
 };
 
 export default {
@@ -323,15 +326,42 @@ export default {
     };
   },
   created() {
-    this.fetchRestaurants();
+    const { page = 1, categoryId = "" } = this.$route.query;
+    this.fetchRestaurants({
+      page,
+      categoryId
+    });
+  },
+  beforeRouteUpdate(to, from, next) {
+    const { page = 1, categoryId = "" } = to.query;
+    this.fetchRestaurants({ page, categoryId });
+    next();
   },
   methods: {
-    fetchRestaurants() {
-      this.categories = dummyData.categories;
-      this.categoryId = dummyData.categoryId;
-      this.currentPage = dummyData.page;
-      this.restaurants = dummyData.restaurants;
-      this.totalPage = dummyData.totalPage.length;
+    async fetchRestaurants({ page, categoryId }) {
+      try {
+        const response = await restaurantsAPI.getRestaurants({
+          page,
+          categoryId
+        });
+        // STEP 2：將 response 中的 data 和 statusText 取出
+        const { data, statusText } = response;
+        // STEP 3：如果 statusText 不是 OK 的話則進入錯誤處理
+        if (statusText !== "OK") {
+          throw new Error(statusText);
+        }
+        // STEP 4：將從伺服器取得的 data 帶入 Vue 內
+        this.categories = data.categories;
+        this.categoryId = data.categoryId;
+        this.currentPage = data.page;
+        this.restaurants = data.restaurants;
+        this.totalPage = data.totalPage.length;
+      } catch (error) {
+        Toast.fire({
+          type: "error",
+          title: "無法取得餐廳資料，請稍後再試"
+        });
+      }
     }
   }
 };
