@@ -126,6 +126,14 @@ export default {
       isLoading: true
     };
   },
+  watch: {
+    initialRestaurant(restaurant) {
+      this.restaurant = {
+        ...this.restaurant,
+        ...restaurant
+      };
+    }
+  },
   props: {
     initialRestaurant: {
       type: Object,
