@@ -63,7 +63,8 @@
 /* eslint-disable */
 import AdminNav from "@/components/AdminNav";
 import uuid from "uuid/v4";
-//  2. 定義暫時使用的資料
+import adminApi from "./../apis/admin";
+import { Toast } from "./../utils/helpers";
 const dummyData = {
   categories: [
     {
@@ -97,41 +98,46 @@ export default {
   components: {
     AdminNav
   },
-  // 3. 定義 Vue 中使用的 data 資料
   data() {
     return {
       newCategoryName: "",
       categories: []
     };
   },
-  // 5. 調用 `fetchCategories` 方法
   created() {
     this.fetchCategories();
   },
   methods: {
-    // 4. 定義 `fetchCategories` 方法，把 `dummyData` 帶入 Vue 物件
-    fetchCategories() {
-      // 在每一個 category 中都添加一個 isEditing 屬性
-      this.categories = dummyData.categories.map(category => ({
-        ...category,
-        isEditing: false
-      }));
+    async fetchCategories() {
+      try {
+        const {
+          data: { categories },
+          statusText
+        } = await adminApi.categories.get();
+        if (statusText !== "OK") {
+          throw new Error(statusText);
+        }
+        this.categories = categories;
+      } catch (error) {
+        Toast.fire({
+          type: "error",
+          title: "無法取得類別資料，請稍後再試"
+        });
+      }
     },
     createCategory() {
       // TODO: 透過 API 告知伺服器欲新增的餐廳類別...
 
-      // 將新的類別添加到陣列中
       this.categories.push({
         id: uuid(),
         name: this.newCategoryName
       });
 
-      this.newCategoryName = ""; // 清空原本欄位中的內容
+      this.newCategoryName = "";
     },
     deleteCategory(categoryId) {
       // TODO: 透過 API 告知伺服器欲刪除的餐廳類別
 
-      // 將該餐廳類別從陣列中移除
       this.categories = this.categories.filter(
         category => category.id !== categoryId
       );
