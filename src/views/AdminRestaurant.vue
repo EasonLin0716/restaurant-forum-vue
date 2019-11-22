@@ -39,6 +39,9 @@
 <script>
 /* eslint-disable */
 import { emptyImageFilter } from "./../utils/mixins";
+import adminAPI from "./../apis/admin";
+import { Toast } from "./../utils/helpers";
+
 const dummyData = {
   restaurant: {
     id: 2,
@@ -82,19 +85,32 @@ export default {
     this.fetchRestaurant(restaurantId);
   },
   methods: {
-    fetchRestaurant(restaurantId) {
-      const { restaurant } = dummyData;
-      this.restaurant = {
-        ...this.restaurant,
-        id: restaurant.id,
-        name: restaurant.name,
-        categoryName: restaurant.Category.name,
-        image: restaurant.image,
-        openingHours: restaurant.opening_hours,
-        tel: restaurant.tel,
-        address: restaurant.address,
-        description: restaurant.description
-      };
+    async fetchRestaurant(restaurantId) {
+      try {
+        const {
+          data: { restaurant },
+          statusText
+        } = await adminAPI.restaurants.getDetail({ restaurantId });
+        if (statusText !== "OK") {
+          throw new Error(statusText);
+        }
+        this.restaurant = {
+          ...this.restaurant,
+          id: restaurant.id,
+          name: restaurant.name,
+          categoryName: restaurant.Category.name,
+          tel: restaurant.tel,
+          address: restaurant.address,
+          description: restaurant.description,
+          image: restaurant.image,
+          openingHours: restaurant.opening_hours
+        };
+      } catch (error) {
+        Toast.fire({
+          type: "error",
+          title: "無法取得餐廳資料，請稍後再試"
+        });
+      }
     }
   }
 };
