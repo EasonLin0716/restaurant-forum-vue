@@ -9,7 +9,12 @@
           <input v-model="newCategoryName" type="text" class="form-control" placeholder="新增餐廳類別..." />
         </div>
         <div class="col-auto">
-          <button type="button" class="btn btn-primary" @click.stop.prevent="createCategory">新增</button>
+          <button
+            type="button"
+            class="btn btn-primary"
+            @click.stop.prevent="createCategory"
+            :disabled="isProcessing"
+          >新增</button>
         </div>
       </div>
     </form>
@@ -101,7 +106,8 @@ export default {
   data() {
     return {
       newCategoryName: "",
-      categories: []
+      categories: [],
+      isProcessing: false
     };
   },
   created() {
@@ -120,20 +126,40 @@ export default {
         this.categories = categories;
       } catch (error) {
         Toast.fire({
-          type: "error",
+          type: "warning",
           title: "無法取得類別資料，請稍後再試"
         });
       }
     },
-    createCategory() {
+    async createCategory() {
       // TODO: 透過 API 告知伺服器欲新增的餐廳類別...
-
-      this.categories.push({
-        id: uuid(),
-        name: this.newCategoryName
-      });
-
-      this.newCategoryName = "";
+      try {
+        if (!this.newCategoryName) {
+          Toast.fire({
+            type: "warning",
+            title: "請填寫類別名稱"
+          });
+        }
+        this.isProcessing = true;
+        const { data, statusText } = await adminApi.categories.create({
+          name: this.newCategoryName
+        });
+        if (statusText !== "OK") {
+          throw new Error(statusText);
+        }
+        Toast.fire({
+          type: "SweetAlert",
+          title: "建立成功！"
+        });
+        this.isProcessing = false;
+        this.newCategoryName = "";
+      } catch (error) {
+        this.isProcessing = false;
+        Toast.fire({
+          type: "warning",
+          title: "無法建立餐廳類別，請稍後再試"
+        });
+      }
     },
     deleteCategory(categoryId) {
       // TODO: 透過 API 告知伺服器欲刪除的餐廳類別
