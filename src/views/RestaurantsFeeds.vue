@@ -20,6 +20,8 @@
 import NavTabs from "./../components/NavTabs";
 import NewestRestaurants from "./../components/NewestRestaurants";
 import NewestComments from "./../components/NewestComments";
+import restaurantsAPI from "./../apis/restaurants";
+import { Toast } from "./../utils/helpers";
 const dummyData = {
   restaurants: [
     {
@@ -585,9 +587,23 @@ export default {
     this.fetchFeeds();
   },
   methods: {
-    fetchFeeds() {
-      this.restaurants = dummyData.restaurants;
-      this.comments = dummyData.comments;
+    async fetchFeeds() {
+      try {
+        const response = await restaurantsAPI.getFeeds();
+        const { data, statusText } = response;
+        if (statusText !== "OK") {
+          throw new Error(statusText);
+        }
+        this.restaurants = data.restaurants;
+        this.comments = data.comments;
+      } catch (error) {
+        Toast.fire({
+          type: "error",
+          title: "無法取得餐廳資料，請稍後再試"
+        });
+      }
+      // this.restaurants = dummyData.restaurants;
+      // this.comments = dummyData.comments;
     }
   }
 };

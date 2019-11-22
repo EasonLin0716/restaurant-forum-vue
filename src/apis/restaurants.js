@@ -10,5 +10,11 @@ export default {
       // 從 LocalStorage 取出 token，放進 Header
       headers: { Authorization: `Bearer ${getToken()}` }
     })
+  },
+
+  getFeeds() {
+    return apiHelper.get(`/restaurants/feeds`, {
+      headers: { Authorization: `Bearer ${getToken()}` }
+    })
   }
 }
