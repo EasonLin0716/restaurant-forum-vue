@@ -132,7 +132,11 @@ export default {
         });
         this.$router.push("/signin");
       } catch (error) {
-        console.warn(error);
+        this.isProcessing = false;
+        Toast.fire({
+          type: "warning",
+          title: `無法註冊 - ${error.message}`
+        });
       }
     }
   }
