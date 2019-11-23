@@ -80,12 +80,14 @@ export default {
           email: this.email,
           password: this.password
         })
-        // console.log(response)
+        console.log(response)
         const { data, statusText } = response
         if (statusText !== 'OK' || data.status !== 'success') {
           throw new Error(statusText)
         }
         localStorage.setItem('token', data.token)
+        // send data.user to vuex
+        this.$store.commit('setCurrentUser', data.user)
         // if login success push to /restaurants
         this.$router.push('/restaurants')
       } catch (error) {
