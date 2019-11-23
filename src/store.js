@@ -6,8 +6,9 @@ import usersAPI from './apis/users'
 Vue.use(Vuex)
 
 export default new Vuex.Store({
+  // 每個 Vue 元件都可以使用的資料
   state: {
-    // 每個 Vue 元件都可以使用的資料
+    // 登入的使用者資訊
     currentUser: {
       id: -1,
       name: '',
@@ -21,11 +22,12 @@ export default new Vuex.Store({
     // 想要修改 state 的資料時，會在 mutations 裡設定函式
     setCurrentUser(state, currentUser) {
       state.currentUser = {
+        // 此時為預設值(空的)
         ...state.currentUser,
         // 將 API 取得的 currentUser 覆蓋掉 Vuex state 中的 currentUser
         ...currentUser
       }
-      // 將使用者的登入狀態改為 true
+      // 將使用者的登入狀態改為 true (表示已登入)
       state.isAuthenticated = true
     }
   },

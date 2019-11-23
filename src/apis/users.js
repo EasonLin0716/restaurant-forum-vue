@@ -23,6 +23,7 @@ export default {
       headers: { Authorization: `Bearer ${getToken()}` }
     })
   },
+  // 回傳登入的 user json 資料
   getCurrentUser() {
     return apiHelper.get(`/get_current_user`, {
       headers: { Authorization: `Bearer ${getToken()}` }
