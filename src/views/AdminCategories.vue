@@ -185,7 +185,7 @@ export default {
       } catch (error) {
         Toast.fire({
           type: "warning",
-          title: "無法建立餐廳類別，請稍後再試"
+          title: "無法刪除類別，請稍後再試"
         });
       }
     },
