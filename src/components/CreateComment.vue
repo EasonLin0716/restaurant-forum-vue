@@ -12,7 +12,9 @@
 
 <script>
 /* eslint-disable */
-import uuid from "uuid/v4";
+import commentAPI from "./../apis/comments";
+import { Toast } from "./../utils/helpers";
+
 export default {
   data() {
     return {
@@ -26,15 +28,27 @@ export default {
     }
   },
   methods: {
-    handleSubmit() {
-      // TODO: 向 API 發送 POST 請求
-      // 伺服器新增 Comment 成功後...
-      this.$emit("after-create-comment", {
-        commentId: uuid(), // 尚未串接 API 暫時使用隨機的 id
+    async handleSubmit() {
+      if (!this.text) {
+        Toast.fire({
+          type: "error",
+          title: "請輸入評論"
+        });
+        return;
+      }
+      const { data, statusText } = await commentAPI.create({
         restaurantId: this.restaurantId,
         text: this.text
       });
-      this.text = ""; // 將表單內的資料清空
+      if (statusText !== "OK" || data.status !== "success") {
+        throw new Error(statusText);
+      }
+      this.$emit("after-create-comment", {
+        commentId: data.commentId,
+        restaurantId: this.restaurantId,
+        text: this.text
+      });
+      this.text = "";
     }
   }
 };
