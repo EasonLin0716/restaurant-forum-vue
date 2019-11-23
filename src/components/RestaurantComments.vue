@@ -23,6 +23,9 @@
 <script>
 /* eslint-disable */
 import { fromNowFilter } from "./../utils/mixins";
+import commentAPI from "./../apis/comments";
+import { Toast } from "./../utils/helpers";
+
 const dummyUser = {
   currentUser: {
     id: 1,
@@ -41,11 +44,25 @@ export default {
     };
   },
   methods: {
-    handleDeleteButtonClick(commentId) {
-      console.log("handleDeleteButtonClick", commentId);
-      // TODO: 請求 API 伺服器刪除 id 為 commentId 的評論
-      // 觸發父層事件 - $emit( '事件名稱' , 傳遞的資料 )
-      this.$emit("after-delete-comment", commentId);
+    async handleDeleteButtonClick(commentId) {
+      try {
+        console.log("deleted commentId: ", commentId);
+        const { data, statusText } = await commentAPI.delete({ commentId });
+        if (statusText !== "OK") {
+          throw new Error(statusText);
+        }
+        // 觸發父層事件 - $emit( '事件名稱' , 傳遞的資料 )
+        this.$emit("after-delete-comment", commentId);
+        Toast.fire({
+          type: "success",
+          title: "評論刪除成功"
+        });
+      } catch (error) {
+        Toast.fire({
+          type: "error",
+          title: "無法刪除評論，請稍後再試"
+        });
+      }
     }
   },
   mixins: [fromNowFilter],
