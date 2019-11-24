@@ -19,6 +19,8 @@
         :current-page="currentPage"
         :total-page="totalPage"
       />
+      <!-- if no restaurants in this category -->
+      <div v-if="restaurants.length < 1">此類別目前無餐廳資料</div>
     </div>
   </div>
 </template>
