@@ -16,7 +16,8 @@ export default new Vuex.Store({
       image: '',
       isAdmin: false
     },
-    isAuthenticated: false
+    isAuthenticated: false,
+    token: ''
   },
   mutations: {
     // 想要修改 state 的資料時，會在 mutations 裡設定函式
@@ -29,6 +30,12 @@ export default new Vuex.Store({
       }
       // 將使用者的登入狀態改為 true (表示已登入)
       state.isAuthenticated = true
+    },
+    // 移除 token (登出功能)
+    revokeAuthentication(state) {
+      state.currentUser = {}
+      state.isAuthenticated = false
+      localStorage.removeItem('token')
     }
   },
   actions: {
@@ -36,9 +43,11 @@ export default new Vuex.Store({
     async fetchCurrentUser({ commit }) {
       try {
         const { data, statusText } = await usersAPI.getCurrentUser()
+
         if (statusText !== 'OK') {
           throw new Error(statusText)
         }
+
         commit('setCurrentUser', {
           id: data.id,
           name: data.name,
