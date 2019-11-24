@@ -4,7 +4,9 @@
     <h1 class="mt-5">人氣餐廳</h1>
 
     <hr />
+    <Spinner v-if="isLoading" />
     <div
+      v-else
       v-for="restaurant in restaurants"
       :key="restaurant.id"
       class="card mb-3"
@@ -47,6 +49,7 @@
 
 <script>
 /* eslint-disable */
+import Spinner from "./../components/Spinner";
 import NavTabs from "./../components/NavTabs";
 import restaurantsAPI from "./../apis/restaurants";
 import usersAPI from "./../apis/users";
@@ -54,11 +57,13 @@ import { Toast } from "./../utils/helpers";
 
 export default {
   components: {
-    NavTabs
+    NavTabs,
+    Spinner
   },
   data() {
     return {
-      restaurants: []
+      restaurants: [],
+      isLoading: true
     };
   },
   created() {
@@ -67,13 +72,16 @@ export default {
   methods: {
     async fetchFeeds() {
       try {
+        this.isLoading = true;
         const response = await restaurantsAPI.getTopRestaurants();
         const { data, statusText } = response;
         if (statusText !== "OK") {
           throw new Error(statusText);
         }
         this.restaurants = data.restaurants;
+        this.isLoading = false;
       } catch (error) {
+        this.isLoading = false;
         Toast.fire({
           type: "error",
           title: "無法取得餐廳資料，請稍後再試"

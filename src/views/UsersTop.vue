@@ -3,7 +3,8 @@
     <NavTabs />
     <h1 class="mt-5">美食達人</h1>
     <hr />
-    <div class="row text-center">
+    <Spinner v-if="isLoading" />
+    <div v-else class="row text-center">
       <div v-for="user in users" :key="user.id" class="col-3">
         <router-link :to="{name: 'user', params: {id: user.id}}">
           <img :src="user.image | emptyImage" width="140px" height="140px" />
@@ -30,6 +31,7 @@
 </template>
 
 <script>
+import Spinner from "./../components/Spinner";
 import NavTabs from "./../components/NavTabs";
 import usersAPI from "./../apis/users";
 import { Toast } from "./../utils/helpers";
@@ -37,7 +39,8 @@ import { Toast } from "./../utils/helpers";
 export default {
   name: "UsersTop",
   components: {
-    NavTabs
+    NavTabs,
+    Spinner
   },
   filters: {
     emptyImage(src) {
@@ -49,7 +52,8 @@ export default {
   },
   data() {
     return {
-      users: []
+      users: [],
+      isLoading: true
     };
   },
   created() {
@@ -58,12 +62,15 @@ export default {
   methods: {
     async fetchTopUsers() {
       try {
+        this.isLoading = true;
         const { data, statusText } = await usersAPI.getTopUsers();
         if (statusText !== "OK") {
           throw new Error(statusText);
         }
         this.users = data.users;
+        this.isLoading = false;
       } catch (error) {
+        this.isLoading = false;
         Toast.fire({
           type: "error",
           title: "無法取得美食達人，請稍後再試"

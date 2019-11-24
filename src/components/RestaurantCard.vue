@@ -1,5 +1,5 @@
 <template>
-  <div class="col-md-6 col-lg-4">
+  <div v-show="!isLoading" class="col-md-6 col-lg-4">
     <div class="card mb-4">
       <img
         class="card-img-top"
@@ -7,6 +7,7 @@
         alt="Card image cap"
         width="286px"
         height="180px"
+        @load="changeLoading"
       />
       <div class="card-body">
         <p class="card-text title-wrap">
@@ -51,6 +52,7 @@
 import usersAPI from "./../apis/users";
 import { Toast } from "./../utils/helpers";
 export default {
+  components: {},
   props: {
     initialRestaurant: {
       type: Object,
@@ -59,10 +61,14 @@ export default {
   },
   data() {
     return {
+      isLoading: true,
       restaurant: this.initialRestaurant
     };
   },
   methods: {
+    changeLoading() {
+      this.isLoading = false;
+    },
     async addFavorite(restaurantId) {
       try {
         const { data, statusText } = await usersAPI.addFavorite({

@@ -1,6 +1,7 @@
 <template>
   <div class="container py-5">
-    <div class="row">
+    <Spinner v-if="isLoading" />
+    <div v-else class="row">
       <div class="col-md-12">
         <h1>{{ restaurant.name }}</h1>
         <p>[{{ restaurant.categoryName }}]</p>
@@ -38,36 +39,20 @@
 </template>
 <script>
 /* eslint-disable */
+import Spinner from "./../components/Spinner";
 import { emptyImageFilter } from "./../utils/mixins";
 import adminAPI from "./../apis/admin";
 import { Toast } from "./../utils/helpers";
 
-const dummyData = {
-  restaurant: {
-    id: 2,
-    name: "Mrs. Mckenzie Johnston",
-    tel: "567-714-6131 x621",
-    address: "61371 Rosalinda Knoll",
-    opening_hours: "08:00",
-    description:
-      "Quia pariatur perferendis architecto tenetur omnis pariatur tempore.",
-    image: "https://loremflickr.com/320/240/food,dessert,restaurant/?random=2",
-    createdAt: "2019-06-22T09:00:43.000Z",
-    updatedAt: "2019-06-22T09:00:43.000Z",
-    CategoryId: 3,
-    Category: {
-      id: 3,
-      name: "義大利料理",
-      createdAt: "2019-06-22T09:00:43.000Z",
-      updatedAt: "2019-06-22T09:00:43.000Z"
-    }
-  }
-};
 export default {
   name: "AdminRestaurant",
+  components: {
+    Spinner
+  },
   mixins: [emptyImageFilter],
   data() {
     return {
+      isLoading: true,
       restaurant: {
         id: -1,
         name: "",
@@ -111,7 +96,9 @@ export default {
           image: restaurant.image,
           openingHours: restaurant.opening_hours
         };
+        this.isLoading = false;
       } catch (error) {
+        this.isLoading = false;
         Toast.fire({
           type: "error",
           title: "無法取得餐廳資料，請稍後再試"

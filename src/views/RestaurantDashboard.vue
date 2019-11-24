@@ -1,28 +1,35 @@
 <template>
-  <div v-show="!isLoading" class="container py-5">
-    <div>
-      <h1>{{ restaurant.name }}</h1>
-      <p>[{{ restaurant.categoryName }}]</p>
+  <div>
+    <Spinner v-if="isLoading" />
+    <div v-else class="container py-5">
+      <div>
+        <h1>{{ restaurant.name }}</h1>
+        <p>[{{ restaurant.categoryName }}]</p>
+      </div>
+
+      <hr />
+
+      <ul>
+        <li>有 {{ restaurant.commentsLength }} 筆評論</li>
+        <li>有 {{ restaurant.favoritedUsersLength }} 人收藏這家餐廳</li>
+      </ul>
+
+      <a href="#" @click="$router.back()">回上一頁</a>
     </div>
-
-    <hr />
-
-    <ul>
-      <li>有 {{ restaurant.commentsLength }} 筆評論</li>
-      <li>有 {{ restaurant.favoritedUsersLength }} 人收藏這家餐廳</li>
-    </ul>
-
-    <a href="#" @click="$router.back()">回上一頁</a>
   </div>
 </template>
 
 <script>
 /* eslint-disable */
+import Spinner from "./../components/Spinner";
 import restaurantsAPI from "./../apis/restaurants";
 import { Toast } from "./../utils/helpers";
 
 export default {
   name: "RestaurantDashboard",
+  components: {
+    Spinner
+  },
   data() {
     return {
       isLoading: false,
@@ -78,6 +85,7 @@ export default {
         };
         this.isLoading = false;
       } catch (error) {
+        this.isLoading = false;
         Toast.fire({
           type: "error",
           title: "無法取得餐廳資料，請稍後再試"

@@ -4,7 +4,8 @@
       <label for="text">留下評論：</label>
       <textarea v-model="text" class="form-control" rows="3" name="text" />
     </div>
-    <div class="text-right">
+    <div class="d-flex align-items-center justify-content-between">
+      <a href="#" @click="$router.back()">回上一頁</a>
       <button type="submit" class="btn btn-primary mr-0">Submit</button>
     </div>
   </form>

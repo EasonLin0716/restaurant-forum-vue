@@ -1,12 +1,15 @@
 <template>
   <div class="container py-5">
-    <RestaurantDetail :initial-restaurant="restaurant" />
-    <hr />
-    <RestaurantComments
-      :restaurant-comments="restaurantComments"
-      @after-delete-comment="afterDeleteComment"
-    />
-    <CreateComment :restaurant-id="restaurant.id" @after-create-comment="afterCreateComment" />
+    <Spinner v-if="isLoading" />
+    <template v-else>
+      <RestaurantDetail :initial-restaurant="restaurant" />
+      <hr />
+      <RestaurantComments
+        :restaurant-comments="restaurantComments"
+        @after-delete-comment="afterDeleteComment"
+      />
+      <CreateComment :restaurant-id="restaurant.id" @after-create-comment="afterCreateComment" />
+    </template>
   </div>
 </template>
 
@@ -15,6 +18,7 @@
 import RestaurantDetail from "./../components/RestaurantDetail";
 import RestaurantComments from "./../components/RestaurantComments";
 import CreateComment from "./../components/CreateComment";
+import Spinner from "./../components/Spinner.vue";
 import restaurantsAPI from "./../apis/restaurants";
 import { Toast } from "./../utils/helpers";
 import { mapState } from "vuex";
@@ -23,10 +27,12 @@ export default {
   components: {
     RestaurantDetail,
     RestaurantComments,
-    CreateComment
+    CreateComment,
+    Spinner
   },
   data() {
     return {
+      isLoading: true,
       restaurant: {
         id: -1,
         name: "",
@@ -57,6 +63,7 @@ export default {
   methods: {
     async fetchRestaurant(restaurantId) {
       try {
+        this.isLoading = true;
         const { data, statusText } = await restaurantsAPI.getRestaurant({
           restaurantId
         });
@@ -77,7 +84,9 @@ export default {
           isLiked: data.isLiked
         };
         this.restaurantComments = data.restaurant.Comments;
+        this.isLoading = false;
       } catch (error) {
+        this.isLoading = false;
         Toast.fire({
           type: "error",
           title: "無法取得餐廳資料，請稍後再試"

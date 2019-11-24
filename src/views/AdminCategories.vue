@@ -1,6 +1,5 @@
 <template>
   <div class="container py-5">
-    <!-- 1. 使用先前寫好的 AdminNav -->
     <AdminNav />
 
     <form class="my-4">
@@ -18,7 +17,8 @@
         </div>
       </div>
     </form>
-    <table class="table">
+    <Spinner v-if="isLoading" />
+    <table v-else class="table">
       <thead class="thead-dark">
         <tr>
           <th scope="col" width="60">#</th>
@@ -66,7 +66,8 @@
 
 <script>
 /* eslint-disable */
-import AdminNav from "@/components/AdminNav";
+import AdminNav from "./../components/AdminNav";
+import Spinner from "./../components/Spinner";
 import uuid from "uuid/v4";
 import adminApi from "./../apis/admin";
 import { Toast } from "./../utils/helpers";
@@ -101,13 +102,15 @@ const dummyData = {
 
 export default {
   components: {
-    AdminNav
+    AdminNav,
+    Spinner
   },
   data() {
     return {
       newCategoryName: "",
       categories: [],
-      isProcessing: false
+      isProcessing: false,
+      isLoading: true
     };
   },
   created() {
@@ -127,7 +130,9 @@ export default {
           ...category,
           isEditing: false
         }));
+        this.isLoading = false;
       } catch (error) {
+        this.isLoading = false;
         Toast.fire({
           type: "warning",
           title: "無法取得類別資料，請稍後再試"
