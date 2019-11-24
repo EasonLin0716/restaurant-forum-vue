@@ -1,7 +1,9 @@
 <template>
   <div class="container py-5">
     <AdminNav />
-    <table class="table">
+
+    <Spinner v-if="isLoading" />
+    <table v-else class="table">
       <thead class="thead-dark">
         <tr>
           <th scope="col">#</th>
@@ -30,79 +32,73 @@
 </template>
 
 <script>
+/* eslint-disable */
+import { mapState } from "vuex";
 import AdminNav from "./../components/AdminNav";
-const dummyData = {
-  users: [
-    {
-      id: 3,
-      name: "user2",
-      email: "user2@example.com",
-      password: "$2a$10$8SSanoaxZCd/VEJFxxKShuWVFzU6JyuwvYDD6bP4UheZDbSWibPea",
-      isAdmin: false,
-      image: null,
-      createdAt: "2019-11-20T06:25:42.909Z",
-      updatedAt: "2019-11-20T06:25:42.909Z"
-    },
-    {
-      id: 4,
-      name: "lib8186",
-      email: "lib3@example.com",
-      password: "$2a$10$rjYLC02gZK3Ry2/.sPFfqeF02C7mQjKc5vDcybqDVlvYSw96lepda",
-      isAdmin: null,
-      image: null,
-      createdAt: "2019-11-20T06:37:12.860Z",
-      updatedAt: "2019-11-20T06:48:50.976Z"
-    },
-    {
-      id: 1,
-      name: "root1",
-      email: "root@example.com",
-      password: "$2a$10$alLLwv1Kn0tC9euHs6Llwen8uif7jQfU9DPaybXRuGn83ZfKzW56G",
-      isAdmin: true,
-      image: null,
-      createdAt: "2019-11-20T06:25:42.456Z",
-      updatedAt: "2019-11-20T15:18:16.157Z"
-    }
-  ]
-};
-
-const dummyUser = {
-  currentUser: {
-    id: 1,
-    name: "管理者",
-    email: "root@example.com",
-    image: "https://i.pravatar.cc/300",
-    isAdmin: true
-  },
-  isAuthenticated: true
-};
-
+import Spinner from "./../components/Spinner";
+import adminAPI from "./../apis/admin";
+import { Toast } from "./../utils/helpers";
 export default {
   components: {
-    AdminNav
+    AdminNav,
+    Spinner
   },
   data() {
     return {
       users: [],
-      currentUser: dummyUser.currentUser
+      isLoading: true
     };
   },
-  methods: {
-    fetchUser() {
-      this.users = dummyData.users;
-    },
-    toggleUserRole({ userId, isAdmin }) {
-      this.users = this.users.map(user => {
-        if (user.id !== userId) return user;
-        return {
-          ...user,
-          isAdmin: !isAdmin
-        };
-      });
-    }
+  computed: {
+    ...mapState(["currentUser"])
   },
   created() {
     this.fetchUser();
+  },
+  methods: {
+    async fetchUser() {
+      try {
+        const { data, statusText } = await adminAPI.users.get();
+        if (statusText !== "OK") {
+          throw new Error(statusText);
+        }
+        this.users = data.users;
+        this.isLoading = false;
+      } catch (error) {
+        console.error(error);
+        this.isLoading = false;
+        Toast.fire({
+          type: "error",
+          title: "無法取得會員資料，請稍後再試"
+        });
+      }
+    },
+    async toggleUserRole({ userId, isAdmin }) {
+      try {
+        const willBeAdmin = !isAdmin;
+        const { data, statusText } = await adminAPI.users.update({
+          userId,
+          isAdmin: willBeAdmin.toString()
+        });
+        if (statusText !== "OK" || data.status !== "success") {
+          throw new Error(statusText);
+        }
+        this.users = this.users.map(user => {
+          if (user.id !== userId) {
+            return user;
+          }
+          return {
+            ...user,
+            isAdmin: willBeAdmin
+          };
+        });
+      } catch (error) {
+        Toast.fire({
+          type: "error",
+          title: "無法更新會員角色，請稍後再試"
+        });
+      }
+    }
   }
 };
 </script>
